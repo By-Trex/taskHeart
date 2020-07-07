@@ -7,9 +7,7 @@ const RouterComponent = () => {
     return (
         <Router>
             <Scene key="taskHeart">
-                <Scene key="Main" component={Main} hideNavBar={true}  />
-
-
+                <Scene key="Main" component={Main} />
             </Scene>
         </Router>
     );
