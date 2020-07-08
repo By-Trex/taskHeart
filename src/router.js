@@ -3,14 +3,16 @@ import { Text, View , StyleSheet } from 'react-native'
 
 import {Router,Scene, Actions} from "react-native-router-flux"
 
-import Main from "./main"
+import Main from "./screens/main"
 import Card from "./screens/CardDetails"
+import CardNameWithPhoto from "./screens/CardNameWithPhoto"
 
 const RouterComponent = () => {
     return (
         <Router>
             <Scene key="taskHeart" titleStyle = {styles.titleStyle} >
-                <Scene key="Main" component={Main} title = " Main "   initial />
+                <Scene key="Main" component={Main} title = " Main "  initial  />
+                <Scene key="CardNameWithPhoto" component={CardNameWithPhoto} title = " Card List "   />
                 <Scene key="CardDetails" component={Card} title = " Card Features " onLeft = {() => Actions.pop()} />
             </Scene>
         </Router>

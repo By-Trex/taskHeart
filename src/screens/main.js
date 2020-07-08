@@ -1,29 +1,30 @@
 import React, { Component } from 'react'
 import { Text, View, TouchableOpacity, StyleSheet, FlatList, ScrollView, ActivityIndicator } from 'react-native'
+
 import { Actions } from 'react-native-router-flux';
 
-import Spinner from "../components/Spinner"
+import {resultArrayed} from "../actions"
+import { connect } from "react-redux"
 
 
-export default class Main extends Component {
+class Main extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             isLoading: false,
-            dataSource: []
+            dataSource: [],
+            mecArray: []
         }
     }
 
 
     componentDidMount() {
-        this.setState({
-            isLoading: false
-        })
+        console.log("asdad" + this.props.resultArrayed())
     }
 
     getCardData = () => {
-
+        var setMechanics = new Set();
         fetch("https://omgvamp-hearthstone-v1.p.rapidapi.com/cards", {
             "method": "GET",
             "headers": {
@@ -35,6 +36,7 @@ export default class Main extends Component {
 
                 response.json()
                     .then(result => {
+                        var mechanicsArray = []
                         var resultArray = []
                         var objectKeys = Object.keys(result);
                         for (let k = 0; k < objectKeys.length; k++) {
@@ -43,6 +45,12 @@ export default class Main extends Component {
                                 for (let i = 0; i < tempArray.length; i++) {
                                     if (tempArray[i].hasOwnProperty("mechanics")) {
                                         resultArray.push(tempArray[i])
+                                        this.props.resultArrayed(resultArray)
+                                        console.log("arrasadas : " +this.props.resultArray)
+                                        for (let y = 0; y < tempArray[i].mechanics.length; y++) {
+                                            setMechanics.add(tempArray[i].mechanics[y].name)
+
+                                        }
                                     }
                                 }
                             }
@@ -53,11 +61,23 @@ export default class Main extends Component {
                         })
 
                         console.log(resultArray)
+                    }).then(() => {
+                        var mechanicsArray = this.convertSetToArray(setMechanics)
+                        var A = ""
+                        this.setState({
+                            mecArray: mechanicsArray
+                        })
                     })
             })
             .catch(err => {
                 console.log(err);
             });
+    }
+
+    convertSetToArray(set) {
+        var a = [];
+        set.forEach(x => a.push(x));
+        return a;
     }
 
     render() {
@@ -75,11 +95,18 @@ export default class Main extends Component {
                             <View style={styles.loader}>
                                 <ActivityIndicator size="large" />
                             </View> :
-                            <FlatList
-                                data={this.state.dataSource}
-                                renderItem={({ item }) => <Text>{item.mechanics[0].name}</Text>}
+                            <View style={styles.FlatContainer}>
+                                <FlatList
+                                    style={{ paddingVertical: 10 }}
+                                    data={this.state.mecArray}
+                                    renderItem={({ item }) =>
+                                        <TouchableOpacity>
+                                            <Text>{item}</Text>
+                                        </TouchableOpacity>
+                                    }
 
-                            />
+                                />
+                            </View>
                     }
 
                 </ScrollView>
@@ -96,11 +123,29 @@ const styles = StyleSheet.create({
     },
     button: {
         alignItems: "center",
-        backgroundColor: "#DDDDDD",
-        padding: 10
+        backgroundColor: "orange",
+        padding: 10,
+        marginTop: 15
     },
     loader: {
         marginTop: 10,
         alignItems: 'center'
+    },
+    FlatContainer: {
+        justifyContent: "center",
+        alignItems: "center",
+        flex: 1
     }
 })
+
+
+const mapStateToProps = ({ taskHeartResponse }) => {
+    const { resultArray } = taskHeartResponse;
+    return {
+        resultArray
+    };
+}
+
+export default connect(mapStateToProps, { resultArrayed })(Main)
+{/* <Text>{item.mechanics[0].name}</Text> */}
+

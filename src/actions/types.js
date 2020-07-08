@@ -1,0 +1,1 @@
+export const RESULT_ARRAY = "result_array"
