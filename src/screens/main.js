@@ -3,7 +3,7 @@ import { Text, View, TouchableOpacity, StyleSheet, FlatList, ScrollView, Activit
 
 import { Actions } from 'react-native-router-flux';
 
-import {resultArrayed} from "../actions"
+import { resultArrayed , selectedMechanicName } from "../actions"
 import { connect } from "react-redux"
 
 
@@ -20,7 +20,7 @@ class Main extends Component {
 
 
     componentDidMount() {
-        console.log("asdad" + this.props.resultArrayed())
+
     }
 
     getCardData = () => {
@@ -44,15 +44,14 @@ class Main extends Component {
                             if (tempArray.length > 0) {
                                 for (let i = 0; i < tempArray.length; i++) {
                                     if (tempArray[i].hasOwnProperty("mechanics")) {
-                                        resultArray.push(tempArray[i])
-                                        this.props.resultArrayed(resultArray)
-                                        console.log("arrasadas : " +this.props.resultArray)
+                                        resultArray.push(tempArray[i])                   
                                         for (let y = 0; y < tempArray[i].mechanics.length; y++) {
                                             setMechanics.add(tempArray[i].mechanics[y].name)
 
                                         }
                                     }
                                 }
+                                this.props.resultArrayed(resultArray)
                             }
                         }
                         this.setState({
@@ -74,10 +73,17 @@ class Main extends Component {
             });
     }
 
+
+
     convertSetToArray(set) {
         var a = [];
         set.forEach(x => a.push(x));
         return a;
+    }
+
+    getItemName = (item) => {
+        this.props.selectedMechanicName(item)
+        Actions.CardNameWithPhoto(item)
     }
 
     render() {
@@ -86,7 +92,7 @@ class Main extends Component {
                 <ScrollView>
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={this.getCardData()}
+                        onPress={()=>this.getCardData()}
                     >
                         <Text>Get Data</Text>
                     </TouchableOpacity>
@@ -100,7 +106,7 @@ class Main extends Component {
                                     style={{ paddingVertical: 10 }}
                                     data={this.state.mecArray}
                                     renderItem={({ item }) =>
-                                        <TouchableOpacity>
+                                        <TouchableOpacity onPress = {()=>this.getItemName(item)}>
                                             <Text>{item}</Text>
                                         </TouchableOpacity>
                                     }
@@ -140,12 +146,13 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = ({ taskHeartResponse }) => {
-    const { resultArray } = taskHeartResponse;
+    const { resultArray , item  } = taskHeartResponse;
     return {
-        resultArray
+        resultArray,
+        item
     };
 }
 
-export default connect(mapStateToProps, { resultArrayed })(Main)
+export default connect(mapStateToProps, { resultArrayed , selectedMechanicName })(Main)
 {/* <Text>{item.mechanics[0].name}</Text> */}
 

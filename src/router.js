@@ -12,7 +12,7 @@ const RouterComponent = () => {
         <Router>
             <Scene key="taskHeart" titleStyle = {styles.titleStyle} >
                 <Scene key="Main" component={Main} title = " Main "  initial  />
-                <Scene key="CardNameWithPhoto" component={CardNameWithPhoto} title = " Card List "   />
+                <Scene key="CardNameWithPhoto" component={CardNameWithPhoto} title = " Card List " onLeft = {() => Actions.pop()}  />
                 <Scene key="CardDetails" component={Card} title = " Card Features " onLeft = {() => Actions.pop()} />
             </Scene>
         </Router>
@@ -20,14 +20,7 @@ const RouterComponent = () => {
 }
 
 export default RouterComponent;
-// renderBackButton = {() => {
-//     <LeftButton 
-//     leftButtonIcon={"arrow-back"} 
-//     onLeft={() => Actions.pop()} 
-//     leftButtonColor={"white"} 
-//     leftButtonIconSize={30} 
-//   />
-// }}
+
 
 const styles = StyleSheet.create({
     titleStyle : {

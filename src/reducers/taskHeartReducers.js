@@ -1,13 +1,16 @@
-import {RESULT_ARRAY} from "../actions/types"
+import { RESULT_ARRAYED , SELECTED_MECHANİC_NAME} from "../actions/types"
 
 const INITIAL_STATE = {
-    resultArray:[]
+    resultArray: [],
+    item: ""
 }
 
-export default (state = INITIAL_STATE,action) => {
+export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case RESULT_ARRAY:
-            return{...state, resultArray : action.payload}
+        case RESULT_ARRAYED:
+            return { ...state, resultArray: action.payload }
+        case SELECTED_MECHANİC_NAME:
+            return { ...state, item: action.payload }
         default:
             return state;
     }

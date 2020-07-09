@@ -1,1 +1,2 @@
-export const RESULT_ARRAY = "result_array"
+export const RESULT_ARRAYED = "result_arrayed"
+export const SELECTED_MECHANİC_NAME = "selected_mechanic_name"
