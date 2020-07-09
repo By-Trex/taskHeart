@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Text, View, Image, StyleSheet, FlatList, TouchableOpacity ,TextInput } from 'react-native'
+import { Text, View, Image, StyleSheet, FlatList, TouchableOpacity, TextInput, Button } from 'react-native'
 
 
-import { resultArrayed , selectedMechanicName } from "../actions"
+import { resultArrayed, selectedMechanicName , selectCard } from "../actions"
 import { connect } from "react-redux"
+import { Actions } from 'react-native-router-flux';
 
 class CardNameWithPhoto extends Component {
 
@@ -11,15 +12,34 @@ class CardNameWithPhoto extends Component {
         super(props);
         this.state = {
             Cards: [],
-            text: ""
+            text: "",
+            itemName: "",
+            CardsFinal: []
         }
 
     }
 
     componentDidMount() {
-            console.log("Arrays " +this.props.resultArray)
-            console.log("item : " +this.props.item)
-        
+        var cardsName = []
+        const { resultArray, item } = this.props
+        const { Cards, itemName, CardsFinal } = this.state
+        console.log("Arrays " + this.props.resultArray)
+        console.log("item : " + this.props.item)
+        this.setState({
+            Cards: resultArray,
+            itemName: item
+        }, () => {
+            const { Cards, itemName, CardsFinal } = this.state
+            for (let i = 0; i < Cards.length; i++) {
+                for (let k = 0; k < Cards[i].mechanics.length; k++) {
+                    if (Cards[i].mechanics[k].name === itemName) {
+                        CardsFinal.push(Cards[i])
+                    }
+                }
+            }
+        }
+        )
+
     }
 
     renderCardDetails = ({ item, index }) => {
@@ -44,34 +64,45 @@ class CardNameWithPhoto extends Component {
         })
 
         this.setState({
-            Cards : newData
+            Cards: newData
         })
     }
 
     renderHeader = () => {
         const { text } = this.state
-        return(
-            <View style = {styles.searchContainer} >
-                <TextInput placeholder = " Search "
-                           style = {styles.searchInput}
-                           value = {text}
-                           onChangeText = { text => {
-                               this.setState({text})
-                               this.searchFilter(text)
-                           }}
+        return (
+            <View style={styles.searchContainer} >
+                <TextInput placeholder=" Search "
+                    style={styles.searchInput}
+                    value={text}
+                    onChangeText={text => {
+                        this.setState({ text })
+                        this.searchFilter(text)
+                    }}
                 />
             </View>
         )
     }
 
+    getItemFeatures = (selectedCard) => {
+        this.props.selectCard(selectedCard)
+        Actions.CardDetails(selectedCard)
+    }
+
+
     render() {
-        console.log("Cards : " + this.state.Cards )
+        console.log("Cards : " + this.state.Cards)
         return (
-            <FlatList
-                ListHeaderComponent = {this.renderHeader()}
-                renderItem={({ item }) => <Text>{item.Basic}</Text>}
-                data={this.state.Cards}
-            />
+
+                <FlatList
+                    ListHeaderComponent={this.renderHeader()}
+                    renderItem={({item}) =>
+                        <TouchableOpacity style = {{justifyContent:"center",alignItems:"center"}} onPress={() => this.getItemFeatures(selectedCard)} >
+                            <Text >{item.name}</Text>
+                        </TouchableOpacity>
+                    }
+                    data={this.state.CardsFinal}
+                />
         )
     }
 }
@@ -97,23 +128,24 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: "#eee"
     },
-    searchInput:{
-        fontSize : 17,
-        backgroundColor:"#f9f9f9",
-        padding:10
+    searchInput: {
+        fontSize: 17,
+        backgroundColor: "#f9f9f9",
+        padding: 10
 
     },
-    searchContainer:{
-        padding:10
+    searchContainer: {
+        padding: 10
     }
 })
 
 const mapStateToProps = ({ taskHeartResponse }) => {
-    const { resultArray , item} = taskHeartResponse;
+    const { resultArray, item , selectedCard } = taskHeartResponse;
     return {
         resultArray,
-        item
+        item,
+        selectedCard
     };
 }
 
-export default connect(mapStateToProps, { resultArrayed , selectedMechanicName})(CardNameWithPhoto)
+export default connect(mapStateToProps, { resultArrayed, selectedMechanicName , selectCard })(CardNameWithPhoto)

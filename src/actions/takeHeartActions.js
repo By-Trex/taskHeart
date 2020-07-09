@@ -1,4 +1,4 @@
-import { RESULT_ARRAYED , SELECTED_MECHANİC_NAME } from "./types"
+import { RESULT_ARRAYED , SELECTED_MECHANİC_NAME , SELECT_CARD} from "./types"
 
 export const resultArrayed = (resultArray) => {
     return {
@@ -13,4 +13,13 @@ export const selectedMechanicName = (item) => {
         payload : item
     }
 }
+
+export const selectCard = (selectedCard) => {
+    return{
+        type : SELECT_CARD,
+        payload : selectedCard
+    }
+}
+
+
 

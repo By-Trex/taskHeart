@@ -51,9 +51,9 @@ class Main extends Component {
                                         }
                                     }
                                 }
-                                this.props.resultArrayed(resultArray)
                             }
                         }
+                        this.props.resultArrayed(resultArray)
                         this.setState({
                             isLoading: false,
                             dataSource: resultArray
@@ -101,18 +101,15 @@ class Main extends Component {
                             <View style={styles.loader}>
                                 <ActivityIndicator size="large" />
                             </View> :
-                            <View style={styles.FlatContainer}>
                                 <FlatList
                                     style={{ paddingVertical: 10 }}
                                     data={this.state.mecArray}
                                     renderItem={({ item }) =>
-                                        <TouchableOpacity onPress = {()=>this.getItemName(item)}>
+                                        <TouchableOpacity onPress = {()=>this.getItemName(item)} style = {{justifyContent:"center",alignItems:"center"}}>
                                             <Text>{item}</Text>
                                         </TouchableOpacity>
                                     }
-
                                 />
-                            </View>
                     }
 
                 </ScrollView>

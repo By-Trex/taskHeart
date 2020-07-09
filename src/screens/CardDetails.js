@@ -1,9 +1,30 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
+
 import CardFlip from 'react-native-card-flip';
 
+import { resultArrayed, selectedMechanicName , selectCard } from "../actions"
+import { connect } from "react-redux"
 
-export default class Card extends Component {
+import { Actions } from 'react-native-router-flux';
+
+
+
+class Card extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+
+        }
+    }
+
+    componentDidMount() {
+        //console.log("Kanamayi : "+this.props.selectedCard)
+    }
+    
+    
+
     render() {
         return (
             <View style={styles.container}>
@@ -105,3 +126,15 @@ const styles = StyleSheet.create({
         color:"white"
     }
 });
+
+const mapStateToProps = ({ taskHeartResponse }) => {
+    const { resultArray, item , selectedCard } = taskHeartResponse;
+    return {
+        resultArray,
+        item,
+        selectedCard
+    };
+}
+
+export default connect(mapStateToProps, { resultArrayed, selectedMechanicName , selectCard })(Card)
+
