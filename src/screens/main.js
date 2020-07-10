@@ -25,6 +25,9 @@ class Main extends Component {
 
     getCardData = () => {
         var setMechanics = new Set();
+        this.setState({
+            isLoading:true
+        })
         fetch("https://omgvamp-hearthstone-v1.p.rapidapi.com/cards", {
             "method": "GET",
             "headers": {

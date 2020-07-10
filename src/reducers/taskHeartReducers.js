@@ -3,7 +3,7 @@ import { RESULT_ARRAYED, SELECTED_MECHANİC_NAME, SELECT_CARD } from "../actions
 const INITIAL_STATE = {
     resultArray: [],
     item: "",
-    selectedCard:""
+    selectedCard:null
 }
 
 export default (state = INITIAL_STATE, action) => {

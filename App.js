@@ -6,7 +6,7 @@ import { createStore , applyMiddleware } from "redux"
 import ReduxThunk from "redux-thunk"
 import reducers from "./src/reducers"
 
-import Router from "./src/router"
+import Router from "./src/Router"
 
 
 

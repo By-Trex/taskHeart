@@ -15,17 +15,21 @@ class Card extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            takenItem:""
         }
     }
 
     componentDidMount() {
-        //console.log("Kanamayi : "+this.props.selectedCard)
+        const { selectedCard } = this.props
+        this.setState({
+            takenItem:selectedCard
+        })
     }
     
     
 
     render() {
+        const { takenItem } = this.state
         return (
             <View style={styles.container}>
                 <CardFlip style={styles.cardContainer} ref={card => (this.card = card)}>
@@ -41,39 +45,35 @@ class Card extends Component {
                         onPress={() => this.card.flip()}>
                         <View style={styles.domain}>
                             <Text style = {styles.cardText}> Card Id : </Text>
-                            <Text style = {styles.cardText}> A Card </Text>
+                            <Text style = {styles.cardText}> {takenItem.cardId} </Text>
                         </View>
                         <View style={styles.domain}>
                             <Text style = {styles.cardText}> Card Set : </Text>
-                            <Text style = {styles.cardText}> A Card </Text>
+                            <Text style = {styles.cardText}> {takenItem.cardSet} </Text>
                         </View>
                         <View style={styles.domain}>
                             <Text style = {styles.cardText}> Dbf Id : </Text>
-                            <Text style = {styles.cardText}> A Card </Text>
-                        </View>
-                        <View style={styles.domain}>
-                            <Text style = {styles.cardText}> Card Id : </Text>
-                            <Text style = {styles.cardText}> A Card </Text>
+                            <Text style = {styles.cardText}> {takenItem.dbfId} </Text>
                         </View>
                         <View style={styles.domain}>
                             <Text style = {styles.cardText}> Locale : </Text>
-                            <Text style = {styles.cardText}> A Card </Text>
+                            <Text style = {styles.cardText}> {takenItem.locale} </Text>
                         </View>
                         <View style={styles.domain}>
                             <Text style = {styles.cardText}> Name : </Text>
-                            <Text style = {styles.cardText}> A Card </Text>
+                            <Text style = {styles.cardText}> {takenItem.name} </Text>
                         </View>
                         <View style={styles.domain}>
                             <Text style = {styles.cardText}> Player Class : </Text>
-                            <Text style = {styles.cardText}> A Card </Text>
+                            <Text style = {styles.cardText}> {takenItem.playerClass} </Text>
                         </View>
                         <View style={styles.domain}>
                             <Text style = {styles.cardText}> Text : </Text>
-                            <Text style = {styles.cardText}> A Card </Text>
+                            <Text style = {styles.cardText}> {takenItem.text} </Text>
                         </View>
                         <View style={styles.domain}>
                             <Text style = {styles.cardText}> Type: : </Text>
-                            <Text style = {styles.cardText}> A Card </Text>
+                            <Text style = {styles.cardText}> {takenItem.type} </Text>
                         </View>
                     </TouchableOpacity>
                 </CardFlip>

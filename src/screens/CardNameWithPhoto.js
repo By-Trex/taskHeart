@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { Text, View, Image, StyleSheet, FlatList, TouchableOpacity, TextInput, Button } from 'react-native'
+import { Text, View, Image, StyleSheet, FlatList, TouchableOpacity, TextInput, Button, ActivityIndicator } from 'react-native'
 
 
-import { resultArrayed, selectedMechanicName , selectCard } from "../actions"
+import { resultArrayed, selectedMechanicName, selectCard } from "../actions"
 import { connect } from "react-redux"
 import { Actions } from 'react-native-router-flux';
+import { ScrollView } from 'react-native-gesture-handler';
 
 class CardNameWithPhoto extends Component {
 
@@ -14,7 +15,9 @@ class CardNameWithPhoto extends Component {
             Cards: [],
             text: "",
             itemName: "",
-            CardsFinal: []
+            CardsFinal: [],
+            CardsFinalFilter:[],
+            isLoading: true
         }
 
     }
@@ -34,38 +37,45 @@ class CardNameWithPhoto extends Component {
                 for (let k = 0; k < Cards[i].mechanics.length; k++) {
                     if (Cards[i].mechanics[k].name === itemName) {
                         CardsFinal.push(Cards[i])
+                        
                     }
                 }
             }
+            this.setState({
+                isLoading: false,
+                CardsFinalFilter:CardsFinal
+            })
         }
+
         )
 
     }
 
-    renderCardDetails = ({ item, index }) => {
-        return (
-            <TouchableOpacity> style = {[styles.itemContainer, { backgroundColor: index % 2 === 0 ? "#fafafa" : null }]}
-                <Image style={styles.avatar}
-                    source={null} />
-                <View style={styles.textContainer}>
-                    <Text style={styles.cardName} >Barış's Card</Text>
-                </View>
-            </TouchableOpacity>
-        )
-    }
+    // renderCardDetails = ({ item, index }) => {
+    //     return (
+    //         <TouchableOpacity> style = {[styles.itemContainer, { backgroundColor: index % 2 === 0 ? "#fafafa" : null }]}
+    //             <Image style={styles.avatar}
+    //                 source={null} />
+    //             <View style={styles.textContainer}>
+    //                 <Text style={styles.cardName} >Barış's Card</Text>
+    //             </View>
+    //         </TouchableOpacity>
+    //     )
+    // }
 
     searchFilter = (text) => {
-        const { Cards } = this.state
+        const { Cards , CardsFinal } = this.state
 
-        const newData = Cards.filter(item => {
-            const listItem = `${item.Basic.name.toLowerCase()}`
+        const newData = CardsFinal.filter(item => {
+            const listItem = `${item.name.toLowerCase()}`
 
             return listItem.indexOf(text.toLowerCase()) > -1
         })
 
         this.setState({
-            Cards: newData
+            CardsFinalFilter: newData,
         })
+
     }
 
     renderHeader = () => {
@@ -86,23 +96,32 @@ class CardNameWithPhoto extends Component {
 
     getItemFeatures = (selectedCard) => {
         this.props.selectCard(selectedCard)
-        Actions.CardDetails(selectedCard)
+        Actions.CardDetails()
     }
 
 
     render() {
         console.log("Cards : " + this.state.Cards)
         return (
-
-                <FlatList
-                    ListHeaderComponent={this.renderHeader()}
-                    renderItem={({item}) =>
-                        <TouchableOpacity style = {{justifyContent:"center",alignItems:"center"}} onPress={() => this.getItemFeatures(selectedCard)} >
-                            <Text >{item.name}</Text>
-                        </TouchableOpacity>
+            <View>
+                <ScrollView>
+                    {
+                        this.state.isLoading ?
+                            <View style={styles.loader}>
+                                <ActivityIndicator size="large" />
+                            </View> :
+                            <FlatList
+                                ListHeaderComponent={this.renderHeader()}
+                                renderItem={({ item }) =>
+                                    <TouchableOpacity style={{ justifyContent: "center", alignItems: "center" }} onPress={() => this.getItemFeatures(item)} >
+                                        <Text >{item.name}</Text>
+                                    </TouchableOpacity>
+                                }
+                                data={this.state.CardsFinalFilter}
+                            />
                     }
-                    data={this.state.CardsFinal}
-                />
+                </ScrollView>
+            </View>
         )
     }
 }
@@ -136,11 +155,15 @@ const styles = StyleSheet.create({
     },
     searchContainer: {
         padding: 10
-    }
+    },
+    loader: {
+        marginTop: 10,
+        alignItems: 'center'
+    },
 })
 
 const mapStateToProps = ({ taskHeartResponse }) => {
-    const { resultArray, item , selectedCard } = taskHeartResponse;
+    const { resultArray, item, selectedCard } = taskHeartResponse;
     return {
         resultArray,
         item,
@@ -148,4 +171,6 @@ const mapStateToProps = ({ taskHeartResponse }) => {
     };
 }
 
-export default connect(mapStateToProps, { resultArrayed, selectedMechanicName , selectCard })(CardNameWithPhoto)
+export default connect(mapStateToProps, { resultArrayed, selectedMechanicName, selectCard })(CardNameWithPhoto)
+
+
