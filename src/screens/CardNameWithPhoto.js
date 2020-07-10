@@ -1,11 +1,19 @@
 import React, { Component } from 'react'
-import { Text, View, Image, StyleSheet, FlatList, TouchableOpacity, TextInput, Button, ActivityIndicator } from 'react-native'
+import { Text, View, Image, StyleSheet, FlatList, TouchableOpacity, TextInput, Button, ActivityIndicator, SafeAreaView } from 'react-native'
 
 
 import { resultArrayed, selectedMechanicName, selectCard } from "../actions"
 import { connect } from "react-redux"
 import { Actions } from 'react-native-router-flux';
 import { ScrollView } from 'react-native-gesture-handler';
+
+import { YellowBox } from 'react-native'
+
+
+
+YellowBox.ignoreWarnings([
+  'VirtualizedLists should never be nested', 
+])
 
 class CardNameWithPhoto extends Component {
 
@@ -104,7 +112,7 @@ class CardNameWithPhoto extends Component {
     render() {
         console.log("Cards : " + this.state.Cards)
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <ScrollView>
                     <TouchableOpacity
                         style={styles.button}
@@ -125,10 +133,11 @@ class CardNameWithPhoto extends Component {
                                     </TouchableOpacity>
                                 }
                                 data={this.state.CardsFinalFilter}
+                                keyExtractor={(item, index) => index.toString()}
                             />
                     }
                 </ScrollView>
-            </View>
+            </SafeAreaView>
         )
     }
 }

@@ -1,10 +1,18 @@
 import React, { Component } from 'react'
-import { Text, View, TouchableOpacity, StyleSheet, FlatList, ScrollView, ActivityIndicator } from 'react-native'
+import { Text, View, TouchableOpacity, StyleSheet, FlatList, ScrollView, ActivityIndicator, SafeAreaView } from 'react-native'
 
 import { Actions } from 'react-native-router-flux';
 
-import { resultArrayed , selectedMechanicName } from "../actions"
+import { resultArrayed, selectedMechanicName } from "../actions"
 import { connect } from "react-redux"
+
+import { YellowBox } from 'react-native'
+
+
+
+YellowBox.ignoreWarnings([
+    'VirtualizedLists should never be nested', 
+  ])
 
 
 class Main extends Component {
@@ -26,7 +34,7 @@ class Main extends Component {
     getCardData = () => {
         var setMechanics = new Set();
         this.setState({
-            isLoading:true
+            isLoading: true
         })
         fetch("https://omgvamp-hearthstone-v1.p.rapidapi.com/cards", {
             "method": "GET",
@@ -47,7 +55,7 @@ class Main extends Component {
                             if (tempArray.length > 0) {
                                 for (let i = 0; i < tempArray.length; i++) {
                                     if (tempArray[i].hasOwnProperty("mechanics")) {
-                                        resultArray.push(tempArray[i])                   
+                                        resultArray.push(tempArray[i])
                                         for (let y = 0; y < tempArray[i].mechanics.length; y++) {
                                             setMechanics.add(tempArray[i].mechanics[y].name)
 
@@ -91,11 +99,11 @@ class Main extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <ScrollView>
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={()=>this.getCardData()}
+                        onPress={() => this.getCardData()}
                     >
                         <Text>Get Data</Text>
                     </TouchableOpacity>
@@ -104,19 +112,20 @@ class Main extends Component {
                             <View style={styles.loader}>
                                 <ActivityIndicator size="large" />
                             </View> :
-                                <FlatList
-                                    style={{ paddingVertical: 10 }}
-                                    data={this.state.mecArray}
-                                    renderItem={({ item }) =>
-                                        <TouchableOpacity onPress = {()=>this.getItemName(item)} style = {{justifyContent:"center",alignItems:"center"}}>
-                                            <Text>{item}</Text>
-                                        </TouchableOpacity>
-                                    }
-                                />
+                            <FlatList
+                                style={{ paddingVertical: 10 }}
+                                data={this.state.mecArray}
+                                keyExtractor={(item, index) => index.toString()}
+                                renderItem={({ item }) =>
+                                    <TouchableOpacity onPress={() => this.getItemName(item)} style={{ justifyContent: "center", alignItems: "center" }}>
+                                        <Text>{item}</Text>
+                                    </TouchableOpacity>
+                                }
+                            />
                     }
 
                 </ScrollView>
-            </View>
+            </SafeAreaView>
         )
     }
 }
@@ -146,12 +155,12 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = ({ taskHeartResponse }) => {
-    const { resultArray , item  } = taskHeartResponse;
+    const { resultArray, item } = taskHeartResponse;
     return {
         resultArray,
         item
     };
 }
 
-export default connect(mapStateToProps, { resultArrayed , selectedMechanicName })(Main)
+export default connect(mapStateToProps, { resultArrayed, selectedMechanicName })(Main)
 

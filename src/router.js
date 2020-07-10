@@ -12,8 +12,8 @@ import Search from "./screens/Search"
 
 const RouterComponent = () => {
     return (
-        <Router>
-            <Scene key="taskHeart" titleStyle = {styles.titleStyle} >
+        <Router  >
+            <Scene key="taskHeart" titleStyle = {{justifyContent:"center",alignItems:"center"}}  initial >
                 <Scene key="Main" component={Main} title = " Main " initial   />
                 <Scene key="CardNameWithPhoto" component={CardNameWithPhoto} title = " Card List " onLeft = {() => Actions.pop()}  />
                 <Scene key="CardDetails" component={Card} title = " Card Features " onLeft = {() => Actions.pop()} />
@@ -27,10 +27,13 @@ export default RouterComponent;
 
 
 const styles = StyleSheet.create({
-    titleStyle : {
-        // justifyContent:"center",
-        // alignItems:"center",
-        paddingLeft:"40%"
+    // titleStyle : {
+    //     flex:1,
+    //     alignItems:"center",
+    //     justifyContent:"center"
+    //     textAlign:"center",
+    //     alignContent:"center",
+    //      marginHorizontal:"40%"
 
-    }
+    // }
 })

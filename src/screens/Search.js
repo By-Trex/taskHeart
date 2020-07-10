@@ -1,7 +1,15 @@
 import React, { Component } from 'react'
-import { Text, View, ScrollView, ActivityIndicator, StyleSheet, FlatList, TextInput } from 'react-native'
+import { Text, View, ScrollView, ActivityIndicator, StyleSheet, FlatList, TextInput, SafeAreaView } from 'react-native'
 
 import { debounce } from "lodash";
+
+import { YellowBox } from 'react-native'
+
+
+
+YellowBox.ignoreWarnings([
+    'VirtualizedLists should never be nested', 
+  ])
 
 
 export default class Search extends Component {
@@ -84,7 +92,7 @@ export default class Search extends Component {
 
     render() {
         return (
-            <View style={{ flex: 1 }}>
+            <SafeAreaView style={{ flex: 1 }}>
                 <ScrollView>
                     {
                         this.state.isLoading ?
@@ -96,10 +104,11 @@ export default class Search extends Component {
                                 renderItem={({ item }) => <View style={styles.flatText}><Text>{item.name}</Text></View>
                                 }
                                 data={this.state.cards}
+                                keyExtractor={(item, index) => index.toString()}
                             />
                     }
                 </ScrollView>
-            </View>
+            </SafeAreaView>
         )
     }
 }
