@@ -30,7 +30,7 @@ export default class Search extends Component {
 
     renderHeader = () => {
         const { item } = this.state
-        return (
+        return ( 
             <View style={styles.searchContainer} >
                 <TextInput placeholder=" Search "
                     style={styles.searchInput}

@@ -14,10 +14,10 @@ const RouterComponent = () => {
     return (
         <Router>
             <Scene key="taskHeart" titleStyle = {styles.titleStyle} >
-                <Scene key="Main" component={Main} title = " Main "    />
+                <Scene key="Main" component={Main} title = " Main " initial   />
                 <Scene key="CardNameWithPhoto" component={CardNameWithPhoto} title = " Card List " onLeft = {() => Actions.pop()}  />
                 <Scene key="CardDetails" component={Card} title = " Card Features " onLeft = {() => Actions.pop()} />
-                <Scene key="Search" component={Search} title = " Search " onLeft = {() => Actions.pop()} initial/>
+                <Scene key="Search" component={Search} title = " Search " onLeft = {() => Actions.pop()} />
             </Scene>
         </Router>
     );
