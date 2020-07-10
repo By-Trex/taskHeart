@@ -16,7 +16,7 @@ class CardNameWithPhoto extends Component {
             text: "",
             itemName: "",
             CardsFinal: [],
-            CardsFinalFilter:[],
+            CardsFinalFilter: [],
             isLoading: true
         }
 
@@ -37,13 +37,13 @@ class CardNameWithPhoto extends Component {
                 for (let k = 0; k < Cards[i].mechanics.length; k++) {
                     if (Cards[i].mechanics[k].name === itemName) {
                         CardsFinal.push(Cards[i])
-                        
+
                     }
                 }
             }
             this.setState({
                 isLoading: false,
-                CardsFinalFilter:CardsFinal
+                CardsFinalFilter: CardsFinal
             })
         }
 
@@ -51,7 +51,7 @@ class CardNameWithPhoto extends Component {
 
     }
 
-    // renderCardDetails = ({ item, index }) => {
+    // renderCardDetails = ({ item, index }) => {                                                                            // THİS AREA FOR LİSTİNG PHOTO AND NAME
     //     return (
     //         <TouchableOpacity> style = {[styles.itemContainer, { backgroundColor: index % 2 === 0 ? "#fafafa" : null }]}
     //             <Image style={styles.avatar}
@@ -63,18 +63,19 @@ class CardNameWithPhoto extends Component {
     //     )
     // }
 
-    searchFilter = (text) => {
-        const { Cards , CardsFinal } = this.state
+    searchFilter = (text) => {                                                                                                 // THİS AREA FOR FİLTER WİTHOUT SERVİCE
+        // const { Cards, CardsFinal } = this.state
 
-        const newData = CardsFinal.filter(item => {
-            const listItem = `${item.name.toLowerCase()}`
+        // const newData = CardsFinal.filter(item => {
+        //     const listItem = `${item.name.toLowerCase()}`
 
-            return listItem.indexOf(text.toLowerCase()) > -1
-        })
+        //     return listItem.indexOf(text.toLowerCase()) > -1
+        // })
 
-        this.setState({
-            CardsFinalFilter: newData,
-        })
+        // this.setState({
+        //     CardsFinalFilter: newData,
+        // })
+
 
     }
 
@@ -103,15 +104,21 @@ class CardNameWithPhoto extends Component {
     render() {
         console.log("Cards : " + this.state.Cards)
         return (
-            <View>
+            <View style={styles.container}>
                 <ScrollView>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => Actions.Search()}
+                    >
+                        <Text>Search</Text>
+                    </TouchableOpacity>
                     {
                         this.state.isLoading ?
                             <View style={styles.loader}>
                                 <ActivityIndicator size="large" />
                             </View> :
                             <FlatList
-                                ListHeaderComponent={this.renderHeader()}
+                                // ListHeaderComponent={this.renderHeader()}   ----------------------------->        // THİS AREA FOR FİLTER WİTHOUT SERVİCE
                                 renderItem={({ item }) =>
                                     <TouchableOpacity style={{ justifyContent: "center", alignItems: "center" }} onPress={() => this.getItemFeatures(item)} >
                                         <Text >{item.name}</Text>
@@ -128,6 +135,17 @@ class CardNameWithPhoto extends Component {
 
 const styles = StyleSheet.create({
 
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        paddingHorizontal: 10
+    },
+    button: {
+        alignItems: "center",
+        backgroundColor: "orange",
+        padding: 10,
+        marginTop: 15
+    },
     avatar: {
         width: 50,
         height: 50,

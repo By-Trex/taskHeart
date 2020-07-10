@@ -6,6 +6,8 @@ import {Router,Scene, Actions} from "react-native-router-flux"
 import Main from "./screens/Main"
 import Card from "./screens/CardDetails"
 import CardNameWithPhoto from "./screens/CardNameWithPhoto"
+import Search from "./screens/Search"
+
 
 
 const RouterComponent = () => {
@@ -15,6 +17,7 @@ const RouterComponent = () => {
                 <Scene key="Main" component={Main} title = " Main "    />
                 <Scene key="CardNameWithPhoto" component={CardNameWithPhoto} title = " Card List " onLeft = {() => Actions.pop()}  />
                 <Scene key="CardDetails" component={Card} title = " Card Features " onLeft = {() => Actions.pop()} />
+                <Scene key="Search" component={Search} title = " Search " onLeft = {() => Actions.pop()} initial/>
             </Scene>
         </Router>
     );

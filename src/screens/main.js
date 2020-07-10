@@ -154,5 +154,4 @@ const mapStateToProps = ({ taskHeartResponse }) => {
 }
 
 export default connect(mapStateToProps, { resultArrayed , selectedMechanicName })(Main)
-{/* <Text>{item.mechanics[0].name}</Text> */}
 
